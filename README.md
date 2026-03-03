@@ -1,82 +1,58 @@
 # Automated Corneal Endothelium Analysis Using U-Net
 
 ## Overview
+In this project, I developed an end-to-end AI pipeline for automated analysis of corneal endothelial images using deep learning and computer vision. This project implements a Python-based deep learning and machine learning pipeline for automated analysis of corneal endothelium using specular microscopy images.
+Images are in Images and Labels folder
 
-This project implements a Python-based deep learning and machine learning pipeline for automated analysis of corneal endothelium using specular microscopy images.
 
-The system performs:
-- Endothelial cell segmentation using U-Net
-- Morphometric feature extraction
-- Normal vs abnormal classification
 
-The goal is to provide an objective, reproducible, and quantitative approach to endothelial assessment.
+# Problem
+Manual corneal endothelium analysis via specular microscopy is time-consuming and expertise-dependent.
+ The goal was to:
+- Automatically segment endothelial cells
+- Extract clinically relevant morphometric features
+- Classify images as Normal or Abnormal
 
----
+ # Project Highlights
+1. Image Preprocessing
+- Converted raw microscopy images into normalized input tensors
+- Transformed point annotations into pixel-wise masks using Voronoi-based region construction
+- Prepared structured data for supervised learning
 
-## Pipeline Architecture
+2. U-Net Based Segmentation
+- Implemented a full-image U-Net architecture for pixel-wise classification
+- Segmented images into Background, Cell Interior, and Boundary
+- Applied sliding window inference with overlapping patches
+- Used watershed and morphological processing to isolate individual cells
 
-### 1. Image Acquisition
-- Input: Specular microscopy images
-- Preprocessing:
-  - Grayscale conversion
-  - Normalization
-  - Resizing
+3.  Morphometric Feature Extraction
+- From segmented masks, the system computes clinically relevant metrics:
+- Endothelial Cell Density (ECD)
+- Coefficient of Variation (CV) – Polymegathism
+- Hexagonality % – Pleomorphism
+These are the same features ophthalmologists rely on for diagnosis.
 
-### 2. U-Net Segmentation
-- Pixel-wise segmentation of endothelial cells
-- Generates binary or labeled masks
-- Enables detection of individual cells
+4. Clinical Classification
+Extracted features are used for automated prediction of Normal vs Abnormal corneal endothelium using random forest.
 
-### 3. Post-Processing
-- Connected component labeling
-- Morphological cleanup
-- Full mask reconstruction (if patch-based inference)
+# Model Performance & Next Steps
+The system achieves an estimated 88–90% cell detection rate, showing strong performance for automated biomedical segmentation.
 
-### 4. Feature Extraction
+Next phase: strengthen validation using precision, recall, F1-score, and structured error analysis to further improve robustness and move toward clinically reliable AI-assisted corneal assessment.
 
-From the labeled segmentation mask:
+# Tech Stack
+Python • TensorFlow/Keras • OpenCV • Scikit-image • NumPy • Pandas • Classical ML models
 
-- **Endothelial Cell Density (ECD)**
-- **Coefficient of Variation (CV)** (polymegathism)
-- **Hexagonality (H)** (pleomorphism)
+# Model Performance & Next Steps
+The system achieves an estimated 88–90% cell detection rate, showing strong performance for automated biomedical segmentation.
 
-### 5. Machine Learning Classification
-- Input features: Density, CV, Hexagonality
-- Output: Normal / Abnormal classification
-- Models: Logistic Regression / Random Forest / SVM
-
----
-
-## Technologies Used
-
-- Python
-- TensorFlow / Keras
-- U-Net architecture
-- OpenCV
-- scikit-image
-- scikit-learn
-- NumPy
-
----
-
-## Clinical Significance
-
-The system computes standard ophthalmic biomarkers used in clinical practice:
-
-- Cell Density (cells/mm²)
-- CV (cell size variability)
-- Hexagonality (% hexagonal cells)
-
-These parameters help assess corneal endothelial health and detect pathological changes.
-
----
-
-## Future Work
-
+Next phase: 
+-strengthen validation using precision, recall, F1-score, and 
+- structured error analysis to further improve robustness and move toward clinically reliable AI-assisted corneal assessment.
 - Smartphone-based deployment
 - Real-time inference
 - Expanded clinical dataset validation
-- End-to-end deep learning classification
+
 
 ---
 
